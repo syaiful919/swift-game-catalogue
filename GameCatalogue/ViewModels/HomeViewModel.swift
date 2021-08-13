@@ -29,21 +29,22 @@ class HomeViewModel: ObservableObject {
                     let json = try JSON(data: data)
                     let items = json["results"].array!
 
-                    for i in items {
+                    for item in items {
                         let game = GameModel(
-                            id: i["id"].intValue,
-                            name: i["name"].stringValue,
-                            image: i["background_image"].stringValue,
-                            released: i["released"].stringValue,
-                            rating: i["rating"].intValue,
-                            ratingCount: i["ratings_count"].intValue,
-                            metacritic: i["metacritic"].intValue,
-                            playtime: i["playtime"].intValue,
-                            platforms: i["platforms"].arrayValue.map {$0["platform"]["name"].stringValue},
-                            genres: i["genres"].arrayValue.map {$0["name"].stringValue},
-                            tags: i["tags"].arrayValue.map {$0["name"].stringValue},
-                            screenshots: i["short_screenshots"].arrayValue.map {$0["name"].stringValue},
-                            ageRating: i["esrb_rating"].stringValue
+                            id: item["id"].intValue,
+                            name: item["name"].stringValue,
+                            description: nil,
+                            image: item["background_image"].stringValue,
+                            released: item["released"].stringValue,
+                            rating: item["rating"].intValue,
+                            ratingCount: item["ratings_count"].intValue,
+                            metacritic: item["metacritic"].intValue,
+                            playtime: item["playtime"].intValue,
+                            platforms: item["platforms"].arrayValue.map {$0["platform"]["name"].stringValue},
+                            genres: item["genres"].arrayValue.map {$0["name"].stringValue},
+                            tags: item["tags"].arrayValue.map {$0["name"].stringValue},
+                            screenshots: item["short_screenshots"].arrayValue.map {$0["name"].stringValue},
+                            ageRating: item["esrb_rating"].stringValue
                         )
                         DispatchQueue.main.async {
                             self.games.append(game)

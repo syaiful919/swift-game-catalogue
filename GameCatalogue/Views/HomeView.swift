@@ -27,10 +27,8 @@ struct HomeView: View {
                         Text("please try again later")
                             .font(.subheadline).foregroundColor(.grayText)
                             .padding(.bottom, 30)
-                        Button {
+                        Button("Reload") {
                             viewModel.fetchGames()
-                        } label: {
-                            Text("Reload")
                         }
                     }
                 } else {

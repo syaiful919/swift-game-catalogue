@@ -60,10 +60,8 @@ struct DetailView: View {
                     Text("please try again later")
                         .font(.subheadline).foregroundColor(.grayText)
                         .padding(.bottom, 30)
-                    Button {
+                    Button("Reload") {
                         viewModel.fetchGame(id: gameId)
-                    } label: {
-                        Text("Reload")
                     }
                 }
             } else {
