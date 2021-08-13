@@ -18,12 +18,14 @@ struct GameCard: View {
                 .fill(Color.white).shadow(radius: 3)
             VStack {
                 WebImage(url: URL(string: data.image)!)
-                    .resizable().scaledToFill()
+                    .resizable()
+                    .placeholder {Loading()}
+                    .scaledToFill()
                     .frame(minWidth: 0,
                            maxWidth: .infinity,
                            minHeight: 200,
                            maxHeight: 200,
-                           alignment: .topLeading)
+                           alignment: .center)
                     .clipped()
                 VStack(alignment: .leading) {
                     Text(data.name)

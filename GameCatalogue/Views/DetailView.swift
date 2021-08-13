@@ -24,7 +24,8 @@ struct DetailView: View {
                         Rectangle()
                             .fill(Color.white).frame(width: width, height: 250)
                         WebImage(url: URL(string: viewModel.game!.image)!)
-                            .resizable().scaledToFill().frame(width: width, height: 250.0).clipped()
+                            .resizable().placeholder {Loading()}
+                            .scaledToFill().frame(width: width, height: 250.0).clipped()
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .fill(Color.white).frame(width: width, height: 100).offset(y: 75)
                     }
