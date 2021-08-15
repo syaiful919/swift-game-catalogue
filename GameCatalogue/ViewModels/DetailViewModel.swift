@@ -52,7 +52,7 @@ class DetailViewModel: ObservableObject {
             self.gameDataStatus = DataStatus.loading
         }
 
-        guard let url = URL(string: "\(Constants.baseUrl)/games/\(id)?key=\(Constants.apiKey)") else {return }
+        guard let url = URL(string: "\(Constants.baseUrl)/games/\(id)?key=\(Constants.apiKey)") else {return}
         let request = URLRequest(url: url)
 
         let task = URLSession.shared.dataTask(with: request) { data, response, _ in

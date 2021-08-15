@@ -17,7 +17,7 @@ struct FavoriteView: View {
                     ForEach(viewModel.games) { game in
                         GameCard(data: game)
                             .padding(.bottom, game.id == viewModel.games.last?.id ? 100 : 0)
-                    }.padding()
+                    }.padding(10)
                 }
             } else if viewModel.gamesDataStatus == DataStatus.failed {
                 VStack {

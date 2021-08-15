@@ -9,16 +9,28 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel = HomeViewModel()
+    @State private var searchText = ""
 
     var body: some View {
         NavigationView {
             ZStack {
                 if viewModel.gamesDataStatus == DataStatus.loaded {
                     ScrollView {
+                        NavigationLink(
+                            destination: SearchView().navigationBarTitle(Text("Search"))) {
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                TextField("Search...", text: $searchText)
+                                    .padding(.horizontal, 10).padding(.vertical, 8)
+                                    .background(RoundedRectangle(cornerRadius: 10))
+                                    .foregroundColor(.background)
+                                    .disabled(true)
+                            }.padding(.horizontal, 20).padding(.top, 25).padding(.bottom, 10)
+                        }
                         ForEach(viewModel.games) { game in
                             GameCard(data: game)
                                 .padding(.bottom, game.id == viewModel.games.last?.id ? 100 : 0)
-                        }.padding()
+                        }.padding(.horizontal, 10)
                     }
                 } else if viewModel.gamesDataStatus == DataStatus.failed {
                     VStack {

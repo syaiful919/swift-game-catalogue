@@ -1,27 +1,34 @@
 //
-//  HomeViewModel.swift
+//  SearchViewModel.swift
 //  GameCatalogue
 //
-//  Created by Syaiful Salam on 11/08/21.
+//  Created by Syaiful Salam on 15/08/21.
 //
 
 import Foundation
 import Combine
 import SwiftyJSON
 
-class HomeViewModel: ObservableObject {
+class SearchViewModel: ObservableObject {
     @Published var games = [GameModel]()
     @Published var gamesDataStatus: DataStatus = DataStatus.initial
+    var debounceTimer: Timer?
 
-    init() {
-        fetchGames()
+    func searchAction(input: String) {
+        debounceTimer?.invalidate()
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+            self.games.removeAll()
+            if !input.isEmpty {
+                self.fetchGames(input: input)
+            }
+        }
     }
 
-    func fetchGames() {
+    func fetchGames(input: String) {
         DispatchQueue.main.async {
             self.gamesDataStatus = DataStatus.loading
         }
-        guard let url = URL(string: "\(Constants.baseUrl)/games?key=\(Constants.apiKey)") else {return}
+        guard let url = URL(string: "\(Constants.baseUrl)/games?search=\(input)&key=\(Constants.apiKey)") else {return}
         let request = URLRequest(url: url)
 
         let task = URLSession.shared.dataTask(with: request) { data, response, _ in
@@ -52,7 +59,7 @@ class HomeViewModel: ObservableObject {
                         }
                     }
                     DispatchQueue.main.async {
-                        self.gamesDataStatus = DataStatus.loaded
+                        self.gamesDataStatus = self.games.isEmpty ? DataStatus.empty : DataStatus.loaded
                     }
                 } catch {
                     DispatchQueue.main.async {

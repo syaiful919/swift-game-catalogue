@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 class FavoriteViewModel: ObservableObject {
     @Published var games = [GameModel]()

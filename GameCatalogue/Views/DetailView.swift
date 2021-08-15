@@ -107,8 +107,7 @@ struct DescriptionBox: View {
         VStack {
             Text(title).bold().foregroundColor(.blackText).padding(.bottom, 2)
             Text(value).foregroundColor(.grayText)
-        }.frame(width: 105, alignment: .center)
-        .padding(.vertical, 8)
+        }.frame(width: 105, height: 85, alignment: .center)
         .background(Color.background.opacity(0.75))
         .cornerRadius(10).frame(maxWidth: .infinity)
     }

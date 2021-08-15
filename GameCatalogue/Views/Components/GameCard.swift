@@ -45,6 +45,6 @@ struct GameCard: View {
                 }.padding(10)
             }.cornerRadius(10)
         }
-        .padding(5)
+        .padding(10)
     }
 }
