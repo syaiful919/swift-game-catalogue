@@ -14,10 +14,11 @@ struct FavoriteView: View {
         ZStack {
             if viewModel.gamesDataStatus == DataStatus.loaded {
                 ScrollView {
+                    Spacer().frame(height: 10)
                     ForEach(viewModel.games) { game in
                         GameCard(data: game)
                             .padding(.bottom, game.id == viewModel.games.last?.id ? 100 : 0)
-                    }.padding(10)
+                    }.padding(.horizontal, 10)
                 }
             } else if viewModel.gamesDataStatus == DataStatus.failed {
                 VStack {
