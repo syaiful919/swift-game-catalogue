@@ -18,7 +18,9 @@ class HomeViewModel: ObservableObject {
     }
 
     func fetchGames() {
-        gamesDataStatus = DataStatus.loading
+        DispatchQueue.main.async {
+            self.gamesDataStatus = DataStatus.loading
+        }
         guard let url = URL(string: "\(Constants.baseUrl)/games?key=\(Constants.apiKey)") else {return }
         let request = URLRequest(url: url)
 
@@ -30,20 +32,19 @@ class HomeViewModel: ObservableObject {
                     let items = json["results"].array!
 
                     for item in items {
+                        let platformList = item["platforms"].arrayValue.map {$0["platform"]["name"].stringValue}
+                        let genreList = item["genres"].arrayValue.map {$0["name"].stringValue}
+
                         let game = GameModel(
-                            id: item["id"].intValue,
+                            id: item["id"].int32Value,
                             name: item["name"].stringValue,
-                            description: nil,
                             image: item["background_image"].stringValue,
                             released: item["released"].stringValue,
-                            rating: item["rating"].intValue,
-                            ratingCount: item["ratings_count"].intValue,
-                            metacritic: item["metacritic"].intValue,
-                            playtime: item["playtime"].intValue,
-                            platforms: item["platforms"].arrayValue.map {$0["platform"]["name"].stringValue},
-                            genres: item["genres"].arrayValue.map {$0["name"].stringValue},
-                            tags: item["tags"].arrayValue.map {$0["name"].stringValue},
-                            screenshots: item["short_screenshots"].arrayValue.map {$0["name"].stringValue},
+                            rating: item["rating"].int32Value,
+                            metacritic: item["metacritic"].int32Value,
+                            playtime: item["playtime"].int32Value,
+                            platforms: platformList.joined(separator: ", "),
+                            genres: genreList.joined(separator: ", "),
                             ageRating: item["esrb_rating"].stringValue
                         )
                         DispatchQueue.main.async {

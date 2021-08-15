@@ -17,6 +17,7 @@ struct HomeView: View {
                     ScrollView {
                         ForEach(viewModel.games) { game in
                             GameCard(data: game)
+                                .padding(.bottom, game.id == viewModel.games.last?.id ? 100 : 0)
                         }.padding()
                     }
                 } else if viewModel.gamesDataStatus == DataStatus.failed {
@@ -33,6 +34,21 @@ struct HomeView: View {
                     }
                 } else {
                     Loading()
+                }
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        NavigationLink(
+                            destination: FavoriteView().navigationBarTitle(Text("Favorites"))) {
+                            ZStack {
+                                Capsule()
+                                    .fill(Color.red).frame(width: 75, height: 75).padding()
+                                Image(systemName: "heart.fill")
+                                    .resizable().frame(width: 35, height: 35).foregroundColor(.white)
+                            }
+                        }
+                    }
                 }
             }
             .navigationBarTitle("Explore The Best Games", displayMode: .inline)

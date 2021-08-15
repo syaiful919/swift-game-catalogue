@@ -12,9 +12,46 @@ import SwiftyJSON
 class DetailViewModel: ObservableObject {
     @Published var game: GameModel?
     @Published var gameDataStatus: DataStatus = DataStatus.initial
+    @Published var isFav: Bool = false
+
+    private lazy var gameProvider: GameProvider = { return GameProvider() }()
+
+    func toogleFav() {
+        if isFav {
+            gameProvider.deleteGame(Int(game!.id)) {
+                DispatchQueue.main.async {
+                    self.isFav = !self.isFav
+                }
+            }
+        } else {
+            gameProvider.createGame(game!) {
+                DispatchQueue.main.async {
+                    self.isFav = !self.isFav
+                }
+            }
+        }
+    }
 
     func fetchGame(id: Int) {
-        gameDataStatus = DataStatus.loading
+        gameProvider.getGame(id) { data in
+            if let data = data {
+                DispatchQueue.main.async {
+                    self.game = data
+                    self.isFav = !self.isFav
+                    self.gameDataStatus = DataStatus.loaded
+                }
+            } else {
+                self.fetchGameFromNetwork(id: id)
+            }
+        }
+
+    }
+
+    func fetchGameFromNetwork(id: Int) {
+        DispatchQueue.main.async {
+            self.gameDataStatus = DataStatus.loading
+        }
+
         guard let url = URL(string: "\(Constants.baseUrl)/games/\(id)?key=\(Constants.apiKey)") else {return }
         let request = URLRequest(url: url)
 
@@ -23,20 +60,20 @@ class DetailViewModel: ObservableObject {
             if response.statusCode == 200 {
                 do {
                     let json = try JSON(data: data)
+                    let platformList = json["platforms"].arrayValue.map {$0["platform"]["name"].stringValue}
+                    let genreList = json["genres"].arrayValue.map {$0["name"].stringValue}
+
                     let game = GameModel(
-                        id: json["id"].intValue,
+                        id: json["id"].int32Value,
                         name: json["name"].stringValue,
                         description: json["description_raw"].stringValue,
                         image: json["background_image"].stringValue,
                         released: json["released"].stringValue,
-                        rating: json["rating"].intValue,
-                        ratingCount: json["ratings_count"].intValue,
-                        metacritic: json["metacritic"].intValue,
-                        playtime: json["playtime"].intValue,
-                        platforms: json["platforms"].arrayValue.map {$0["platform"]["name"].stringValue},
-                        genres: json["genres"].arrayValue.map {$0["name"].stringValue},
-                        tags: json["tags"].arrayValue.map {$0["name"].stringValue},
-                        screenshots: json["short_screenshots"].arrayValue.map {$0["name"].stringValue},
+                        rating: json["rating"].int32Value,
+                        metacritic: json["metacritic"].int32Value,
+                        playtime: json["playtime"].int32Value,
+                        platforms: platformList.joined(separator: ", "),
+                        genres: genreList.joined(separator: ", "),
                         ageRating: json["esrb_rating"]["name"].stringValue
                     )
                     DispatchQueue.main.async {

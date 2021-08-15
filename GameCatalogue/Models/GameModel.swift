@@ -9,18 +9,15 @@ import Foundation
 import SwiftUI
 
 struct GameModel: Identifiable {
-    let id: Int
-    let name: String
-    let description: String?
-    let image: String
-    let released: String
-    let rating: Int
-    let ratingCount: Int
-    let metacritic: Int?
-    let playtime: Int
-    let platforms: [String]
-    let genres: [String]
-    let tags: [String]
-    let screenshots: [String]
-    let ageRating: String?
+    var id: Int32
+    var name: String = ""
+    var description: String = ""
+    var image: String
+    var released: String = ""
+    var rating: Int32
+    var metacritic: Int32 = -1
+    var playtime: Int32
+    var platforms: String = ""
+    var genres: String = ""
+    var ageRating: String = "Not rated"
 }
