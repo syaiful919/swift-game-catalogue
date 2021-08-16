@@ -14,13 +14,15 @@ struct RatingStar: View {
 
     var body : some View {
         HStack {
-            ForEach((1...rate), id: \.self) { _ in
-                Image(systemName: "star.fill")
-                    .resizable()
-                    .frame(width: size,
-                           height: size,
-                           alignment: Alignment/*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                    .foregroundColor(.yellow)
+            if rate > 0 {
+                ForEach((1...rate), id: \.self) { _ in
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .frame(width: size,
+                               height: size,
+                               alignment: Alignment/*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(.yellow)
+                }
             }
         }
     }

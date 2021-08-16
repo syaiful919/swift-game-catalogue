@@ -33,11 +33,11 @@ struct GameCard: View {
                     Text(DateHelper.format(date: data.released))
                         .font(.subheadline).foregroundColor(.grayText).padding(.bottom, 5)
                     HStack {
-                        RatingStar(rate: data.rating, size: 20)
+                        RatingStar(rate: Int(data.rating), size: 20)
                         Spacer()
                     }
                     NavigationLink(
-                        destination: DetailView(gameId: data.id).navigationBarTitle(Text("Game Detail"))) {
+                        destination: DetailView(gameId: Int(data.id)).navigationBarTitle(Text("Game Detail"))) {
                         Text("see details")
                             .font(.callout).bold().foregroundColor(.main).padding(.top, 5)
                             .frame(maxWidth: .infinity, alignment: .trailing)
@@ -45,6 +45,6 @@ struct GameCard: View {
                 }.padding(10)
             }.cornerRadius(10)
         }
-        .padding(5)
+        .padding(10)
     }
 }
