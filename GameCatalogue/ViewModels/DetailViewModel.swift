@@ -20,13 +20,13 @@ class DetailViewModel: ObservableObject {
         if isFav {
             gameProvider.deleteGame(Int(game!.id)) {
                 DispatchQueue.main.async {
-                    self.isFav = !self.isFav
+                    self.isFav = false
                 }
             }
         } else {
             gameProvider.createGame(game!) {
                 DispatchQueue.main.async {
-                    self.isFav = !self.isFav
+                    self.isFav = true
                 }
             }
         }
@@ -37,7 +37,7 @@ class DetailViewModel: ObservableObject {
             if let data = data {
                 DispatchQueue.main.async {
                     self.game = data
-                    self.isFav = !self.isFav
+                    self.isFav = true
                     self.gameDataStatus = DataStatus.loaded
                 }
             } else {
@@ -50,6 +50,7 @@ class DetailViewModel: ObservableObject {
     func fetchGameFromNetwork(id: Int) {
         DispatchQueue.main.async {
             self.gameDataStatus = DataStatus.loading
+            self.isFav = false
         }
 
         guard let url = URL(string: "\(Constants.baseUrl)/games/\(id)?key=\(Constants.apiKey)") else {return}

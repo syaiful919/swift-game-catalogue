@@ -19,7 +19,7 @@ struct SearchView: View {
                     .onChange(of: searchText) { value in
                         viewModel.searchAction(input: value)
                     }.padding(.horizontal, 10).padding(.vertical, 8)
-                    .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.background))
+                    .background(RoundedRectangle(cornerRadius: 8).foregroundColor(.background))
                     .foregroundColor(.blackText)
             }.padding(.horizontal, 20).padding(.top, 25)
             if viewModel.gamesDataStatus == DataStatus.loaded {
